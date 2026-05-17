@@ -6,7 +6,7 @@ Asset Lens 扩展 E2E 测试
 import pytest
 from playwright.sync_api import Page
 
-from tests.conftest import PageHelper, APITester
+from tests.conftest import APITester
 
 
 @pytest.mark.asset_lens

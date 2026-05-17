@@ -1,6 +1,6 @@
 # Makefile for E2E Tests
 
-.PHONY: install test test-all test-asset-lens test-solo-chat test-stock-analyzer clean report
+.PHONY: install test test-all test-asset-lens test-ts-demo test-solo-chat test-stock-analyzer test-investkit-utils clean report lint typecheck
 
 install:
 	pip install -e .
@@ -15,11 +15,17 @@ test-all:
 test-asset-lens:
 	pytest -v -m asset_lens
 
+test-ts-demo:
+	pytest -v -m ts_demo
+
 test-solo-chat:
 	pytest -v -m solo_chat
 
 test-stock-analyzer:
 	pytest -v -m stock_analyzer
+
+test-investkit-utils:
+	pytest -v -m investkit_utils
 
 test-ui:
 	pytest -v -m ui

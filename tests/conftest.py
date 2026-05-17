@@ -12,13 +12,12 @@ E2E 测试配置
 
 import os
 import time
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 import pytest
 import requests
-from playwright.sync_api import Page, BrowserContext, Browser, Playwright
-
+from playwright.sync_api import BrowserContext, Page
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 SCREENSHOT_DIR = Path("test-results/screenshots")
@@ -29,6 +28,10 @@ TRACE_DIR = Path("test-results/traces")
 SERVICES = {
     "asset_lens": {
         "url": os.getenv("ASSET_LENS_URL", "http://localhost:8000"),
+        "health_endpoint": "/",
+    },
+    "ts_demo": {
+        "url": os.getenv("TS_DEMO_URL", "http://localhost:3000"),
         "health_endpoint": "/",
     },
     "solo_chat": {
@@ -84,6 +87,12 @@ def browser_context_args(browser_context_args: dict) -> dict:
 def asset_lens_url() -> str:
     """asset-lens 服务 URL"""
     return SERVICES["asset_lens"]["url"]
+
+
+@pytest.fixture(scope="session")
+def ts_demo_url() -> str:
+    """ts-demo 服务 URL"""
+    return SERVICES["ts_demo"]["url"]
 
 
 @pytest.fixture(scope="session")
@@ -208,6 +217,8 @@ def api_tester(page: Page, request: pytest.FixtureRequest) -> APITester:
     # 根据测试标记选择服务 URL
     if "asset_lens" in request.node.keywords:
         base_url = SERVICES["asset_lens"]["url"]
+    elif "ts_demo" in request.node.keywords:
+        base_url = SERVICES["ts_demo"]["url"]
     elif "solo_chat" in request.node.keywords:
         base_url = SERVICES["solo_chat"]["url"]
     elif "stock_analyzer" in request.node.keywords:
