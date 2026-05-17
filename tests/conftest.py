@@ -43,7 +43,7 @@ SERVICES = {
         "health_endpoint": "/",
     },
     "lobster": {
-        "url": os.getenv("LOBSTER_URL", "http://localhost:8002"),
+        "url": os.getenv("LOBSTER_URL", "http://localhost:8501"),
         "health_endpoint": "/",
     },
 }
