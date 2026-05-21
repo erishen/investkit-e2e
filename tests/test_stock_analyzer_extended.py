@@ -14,7 +14,9 @@ from tests.conftest import APITester
 class TestBacktestAPI:
     """回测 API 测试"""
 
-    def test_backtest_momentum_strategy(self, page: Page, stock_analyzer_url: str, api_tester: APITester):
+    def test_backtest_momentum_strategy(
+        self, page: Page, stock_analyzer_url: str, api_tester: APITester
+    ):
         """测试动量策略回测"""
         result = api_tester.post(
             "/api/backtest/run",
@@ -29,7 +31,9 @@ class TestBacktestAPI:
 
         assert result["status"] in [200, 404, 500]
 
-    def test_backtest_mean_reversion_strategy(self, page: Page, stock_analyzer_url: str, api_tester: APITester):
+    def test_backtest_mean_reversion_strategy(
+        self, page: Page, stock_analyzer_url: str, api_tester: APITester
+    ):
         """测试均值回归策略回测"""
         result = api_tester.post(
             "/api/backtest/run",
@@ -43,7 +47,9 @@ class TestBacktestAPI:
 
         assert result["status"] in [200, 404, 500]
 
-    def test_backtest_result_format(self, page: Page, stock_analyzer_url: str, api_tester: APITester):
+    def test_backtest_result_format(
+        self, page: Page, stock_analyzer_url: str, api_tester: APITester
+    ):
         """测试回测结果格式"""
         result = api_tester.get("/api/backtest/result", expected_status=[200, 404])
 
@@ -69,7 +75,9 @@ class TestSignalsAPI:
 
     def test_signals_by_type(self, page: Page, stock_analyzer_url: str, api_tester: APITester):
         """测试按类型获取信号"""
-        result = api_tester.get("/api/signals?type=macd_golden_cross", expected_status=[200, 404, 500])
+        result = api_tester.get(
+            "/api/signals?type=macd_golden_cross", expected_status=[200, 404, 500]
+        )
 
         assert result["status"] in [200, 404, 500]
 
@@ -167,7 +175,9 @@ class TestStockDataAPI:
 
     def test_stock_history(self, page: Page, stock_analyzer_url: str, api_tester: APITester):
         """测试股票历史"""
-        result = api_tester.get("/api/stocks/000001/history?days=30", expected_status=[200, 404, 500])
+        result = api_tester.get(
+            "/api/stocks/000001/history?days=30", expected_status=[200, 404, 500]
+        )
 
         assert result["status"] in [200, 404, 500]
 

@@ -177,20 +177,26 @@ class APITester:
         response = self.page.request.get(url)
 
         if expected_status:
-            assert response.status in expected_status, f"期望状态码 {expected_status}，实际 {response.status}"
+            assert response.status in expected_status, (
+                f"期望状态码 {expected_status}，实际 {response.status}"
+            )
 
         try:
             return {"status": response.status, "data": response.json()}
         except Exception:
             return {"status": response.status, "data": None}
 
-    def post(self, endpoint: str, data: dict | None = None, expected_status: list | None = None) -> dict:
+    def post(
+        self, endpoint: str, data: dict | None = None, expected_status: list | None = None
+    ) -> dict:
         """发送 POST 请求并验证响应"""
         url = f"{self.base_url}{endpoint}"
         response = self.page.request.post(url, data=data)
 
         if expected_status:
-            assert response.status in expected_status, f"期望状态码 {expected_status}，实际 {response.status}"
+            assert response.status in expected_status, (
+                f"期望状态码 {expected_status}，实际 {response.status}"
+            )
 
         try:
             return {"status": response.status, "data": response.json()}
@@ -259,7 +265,9 @@ class PageHelper:
         self.page.click(selector, timeout=timeout)
         self.page.wait_for_load_state("domcontentloaded")
 
-    def fill_and_submit(self, selector: str, value: str, submit_selector: str | None = None) -> None:
+    def fill_and_submit(
+        self, selector: str, value: str, submit_selector: str | None = None
+    ) -> None:
         """填充表单并提交"""
         self.page.fill(selector, value)
         if submit_selector:
@@ -296,7 +304,9 @@ def page_helper(page: Page) -> PageHelper:
 
 
 @pytest.fixture(scope="module")
-def shared_context(browser_type_launch_args: dict, browser_type: type) -> Generator[BrowserContext, None, None]:
+def shared_context(
+    browser_type_launch_args: dict, browser_type: type
+) -> Generator[BrowserContext, None, None]:
     """共享浏览器上下文"""
     browser = browser_type.launch(**browser_type_launch_args)
     context = browser.new_context(

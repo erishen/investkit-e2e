@@ -58,7 +58,9 @@ class TestStockAPI:
 
     def test_stock_kline(self, page: Page, asset_lens_url: str, api_tester: APITester):
         """测试股票 K 线"""
-        result = api_tester.get("/api/stock/kline/sh600519?ktype=day&count=30", expected_status=[200, 404, 500])
+        result = api_tester.get(
+            "/api/stock/kline/sh600519?ktype=day&count=30", expected_status=[200, 404, 500]
+        )
 
         assert result["status"] in [200, 404, 500]
 
