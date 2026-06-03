@@ -13,15 +13,14 @@ dependencies = [
     "playwright>=1.40.0",
     "pytest>=7.4.0",
     "pytest-playwright>=0.4.0",
-    "pytest-asyncio>=0.21.0",
-    "requests>=2.31.0",
-    "python-dotenv>=1.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "ruff>=0.1.0",
+    "ruff>=0.4.0",
     "mypy>=1.5.0",
+    "pytest-html>=3.2.0",
+    "pytest-xdist>=3.5.0",
 ]
 
 [tool.pytest.ini_options]
@@ -29,7 +28,7 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "-v --tb=short --headed"
+addopts = "-v --tb=short --headless"
 markers = [
     "slow: marks tests as slow",
     "api: API endpoint tests",
@@ -41,6 +40,9 @@ markers = [
     "lobster: lobster tests",
     "investkit_utils: investkit-utils tests",
 ]
+
+[tool.ruff]
+extend = "../pyproject.toml"
 
 [tool.mypy]
 python_version = "3.11"

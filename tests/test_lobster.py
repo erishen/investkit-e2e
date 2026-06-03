@@ -1,189 +1,133 @@
-"""
-Lobster E2E Tests.
-Lobster E2E 测试
-"""
-
-import os
-
 import pytest
 from playwright.sync_api import Page
 
-from tests.conftest import APITester
-
-LOBSTER_URL = os.getenv("LOBSTER_URL", "http://localhost:8501")
-
-
-@pytest.fixture
-def lobster_url() -> str:
-    """Lobster 服务 URL"""
-    return LOBSTER_URL
+from tests.conftest import APITester, SharedTestHelpers
 
 
 @pytest.mark.lobster
 @pytest.mark.api
 class TestLobsterHealthAPI:
-    """Lobster 健康 API 测试"""
-
     def test_health_endpoint(self, page: Page, api_tester: APITester):
-        """测试健康检查端点"""
-        result = api_tester.get("/health", expected_status=[200, 404])
-
-        assert result["status"] in [200, 404]
+        SharedTestHelpers.assert_health_endpoint(api_tester)
 
     def test_api_docs(self, page: Page, api_tester: APITester):
-        """测试 API 文档"""
-        result = api_tester.get("/docs", expected_status=[200, 404])
-
-        assert result["status"] in [200, 404]
+        SharedTestHelpers.assert_api_docs(api_tester)
 
 
 @pytest.mark.lobster
 @pytest.mark.api
 class TestLobsterInvestAPI:
-    """Lobster 投资 API 测试"""
-
     def test_signals_endpoint(self, page: Page, api_tester: APITester):
-        """测试信号端点"""
-        result = api_tester.get("/api/invest/signals", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/invest/signals",
+            expected_keys=["signals", "data", "items", "results"],
+        )
 
     def test_portfolio_endpoint(self, page: Page, api_tester: APITester):
-        """测试投资组合端点"""
-        result = api_tester.get("/api/invest/portfolio", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/invest/portfolio",
+            expected_keys=["portfolio", "data", "items", "holdings"],
+        )
 
     def test_risk_endpoint(self, page: Page, api_tester: APITester):
-        """测试风险端点"""
-        result = api_tester.get("/api/invest/risk", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/invest/risk",
+            expected_keys=["risk", "data", "items", "metrics"],
+        )
 
     def test_market_endpoint(self, page: Page, api_tester: APITester):
-        """测试市场端点"""
-        result = api_tester.get("/api/invest/market", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/invest/market",
+            expected_keys=["market", "data", "items", "indices"],
+        )
 
 
 @pytest.mark.lobster
 @pytest.mark.api
 class TestLobsterRAGAPI:
-    """Lobster RAG API 测试"""
-
     def test_rag_status(self, page: Page, api_tester: APITester):
-        """测试 RAG 状态"""
-        result = api_tester.get("/api/rag/status", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
-
-    def test_rag_query(self, page: Page, api_tester: APITester):
-        """测试 RAG 查询"""
-        result = api_tester.post(
-            "/api/rag/query",
-            data={"query": "投资策略", "k": 5},
-            expected_status=[200, 403, 404, 500],
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/rag/status",
+            expected_keys=["status", "data", "ready", "enabled"],
         )
 
-        assert result["status"] in [200, 403, 404, 500]
+    def test_rag_query(self, page: Page, api_tester: APITester):
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/rag/query",
+            expected_keys=["answer", "data", "results", "documents"],
+            method="post", data={"query": "投资策略", "k": 5},
+        )
 
 
 @pytest.mark.lobster
 @pytest.mark.api
 class TestLobsterSchedulerAPI:
-    """Lobster 定时任务 API 测试"""
-
     def test_scheduler_list(self, page: Page, api_tester: APITester):
-        """测试定时任务列表"""
-        result = api_tester.get("/api/scheduler/list", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/scheduler/list",
+            expected_keys=["tasks", "data", "items", "jobs"],
+        )
 
     def test_scheduler_status(self, page: Page, api_tester: APITester):
-        """测试定时任务状态"""
-        result = api_tester.get("/api/scheduler/status", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/scheduler/status",
+            expected_keys=["status", "data", "running", "enabled"],
+        )
 
 
 @pytest.mark.lobster
 @pytest.mark.api
 class TestLobsterMemoryAPI:
-    """Lobster 记忆 API 测试"""
-
     def test_memory_list(self, page: Page, api_tester: APITester):
-        """测试记忆列表"""
-        result = api_tester.get("/api/memory/list", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
-
-    def test_memory_search(self, page: Page, api_tester: APITester):
-        """测试记忆搜索"""
-        result = api_tester.post(
-            "/api/memory/search",
-            data={"query": "测试", "limit": 10},
-            expected_status=[200, 403, 404, 500],
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/memory/list",
+            expected_keys=["memories", "data", "items", "records"],
         )
 
-        assert result["status"] in [200, 403, 404, 500]
+    def test_memory_search(self, page: Page, api_tester: APITester):
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/memory/search",
+            expected_keys=["results", "data", "items", "memories"],
+            method="post", data={"query": "测试", "limit": 10},
+        )
 
 
 @pytest.mark.lobster
 @pytest.mark.api
 class TestLobsterLLMAPI:
-    """Lobster LLM API 测试"""
-
     def test_llm_status(self, page: Page, api_tester: APITester):
-        """测试 LLM 状态"""
-        result = api_tester.get("/api/llm/status", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
-
-    def test_llm_chat(self, page: Page, api_tester: APITester):
-        """测试 LLM 聊天"""
-        result = api_tester.post(
-            "/api/llm/chat",
-            data={"message": "你好", "stream": False},
-            expected_status=[200, 403, 404, 500],
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/llm/status",
+            expected_keys=["status", "data", "model", "ready"],
         )
 
-        assert result["status"] in [200, 403, 404, 500]
+    def test_llm_chat(self, page: Page, api_tester: APITester):
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/llm/chat",
+            expected_keys=["response", "data", "message", "content"],
+            method="post", data={"message": "你好", "stream": False},
+        )
 
 
 @pytest.mark.lobster
 @pytest.mark.api
 class TestLobsterDataAPI:
-    """Lobster 数据 API 测试"""
-
     def test_data_status(self, page: Page, api_tester: APITester):
-        """测试数据状态"""
-        result = api_tester.get("/api/data/status", expected_status=[200, 404, 500])
-
-        assert result["status"] in [200, 404, 500]
-
-    def test_data_sync(self, page: Page, api_tester: APITester):
-        """测试数据同步"""
-        result = api_tester.post(
-            "/api/data/sync",
-            data={"source": "sina"},
-            expected_status=[200, 403, 404, 500],
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/data/status",
+            expected_keys=["status", "data", "sources", "last_sync"],
         )
 
-        assert result["status"] in [200, 403, 404, 500]
+    def test_data_sync(self, page: Page, api_tester: APITester):
+        SharedTestHelpers.assert_api_endpoint(
+            api_tester, "/api/data/sync",
+            expected_keys=["status", "data", "sync_id", "result"],
+            method="post", data={"source": "sina"},
+        )
 
 
 @pytest.mark.lobster
 @pytest.mark.slow
 class TestLobsterPerformance:
-    """Lobster 性能测试"""
-
     def test_api_response_time(self, page: Page, api_tester: APITester):
-        """测试 API 响应时间"""
-        import time
-
-        start = time.time()
-        api_tester.get("/health")
-        response_time = time.time() - start
-
-        assert response_time < 3, f"API 响应时间过长: {response_time:.2f}s"
+        SharedTestHelpers.assert_api_response_time(api_tester)
