@@ -1,249 +1,204 @@
 # InvestKit E2E Tests
 
-使用 Playwright Python 进行端到端测试。
+End-to-end testing for InvestKit projects using Playwright (Python).
 
-## 项目结构
+## Project Structure
 
 ```
 investkit-e2e/
 ├── tests/
-│   ├── conftest.py              # 测试配置和 fixtures
-│   ├── test_asset_lens.py       # Asset Lens 核心测试
-│   ├── test_asset_lens_extended.py  # Asset Lens 扩展测试
-│   ├── test_ts_demo.py          # TS-Demo 测试
-│   ├── test_stock_analyzer.py   # Stock Analyzer 测试
-│   ├── test_stock_analyzer_extended.py  # Stock Analyzer 扩展测试
-│   ├── test_lobster.py          # Lobster 测试
-│   ├── test_solo_chat.py        # Solo Chat 测试
-│   └── test_investkit_utils.py  # InvestKit Utils 测试
-├── .env.example                 # 环境配置示例
-├── pyproject.toml               # 项目配置
-├── Makefile                     # 构建脚本
-└── README.md                    # 本文件
+│   ├── conftest.py                      # Test configuration & fixtures
+│   ├── test_asset_lens.py               # Asset Lens core tests
+│   ├── test_asset_lens_extended.py      # Asset Lens extended tests
+│   ├── test_ts_demo.py                  # TS-Demo tests
+│   ├── test_stock_analyzer.py           # Stock Analyzer tests
+│   ├── test_stock_analyzer_extended.py  # Stock Analyzer extended tests
+│   ├── test_lobster.py                  # Lobster tests
+│   ├── test_solo_chat.py                # Solo Chat tests
+│   └── test_investkit_utils.py          # InvestKit Utils tests
+├── .env.example                         # Environment config example
+├── pyproject.toml                       # Project configuration
+├── Makefile                             # Build scripts
+└── README.md
 ```
 
-## 安装
+## Installation
 
 ```bash
-# 安装依赖
+# Install dependencies
 pip install -e .
 
-# 安装 Playwright 浏览器
+# Install Playwright browsers
 playwright install
 ```
 
-## 配置
+## Configuration
 
-复制 `.env.example` 为 `.env` 并根据实际情况修改：
+Copy `.env.example` to `.env` and adjust:
 
 ```bash
 cp .env.example .env
 ```
 
-主要配置项：
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `ASSET_LENS_URL` | Asset Lens service URL | http://localhost:8000 |
+| `TS_DEMO_URL` | TS-Demo service URL | http://localhost:3000 |
+| `SOLO_CHAT_URL` | Solo Chat service URL | http://localhost:5173 |
+| `STOCK_ANALYZER_URL` | Stock Analyzer URL | http://localhost:8001 |
+| `LOBSTER_URL` | Lobster service URL | http://localhost:8002 |
+| `HEADLESS` | Headless mode | true |
 
-| 变量 | 说明 | 默认值 |
-|------|------|--------|
-| `ASSET_LENS_URL` | Asset Lens 服务地址 | http://localhost:8000 |
-| `TS_DEMO_URL` | TS-Demo 服务地址 | http://localhost:3000 |
-| `SOLO_CHAT_URL` | Solo Chat 服务地址 | http://localhost:5173 |
-| `STOCK_ANALYZER_URL` | Stock Analyzer 服务地址 | http://localhost:8001 |
-| `LOBSTER_URL` | Lobster 服务地址 | http://localhost:8002 |
-| `HEADLESS` | 无头模式 | true |
-
-## 运行测试
-
-### 基本命令
+## Running Tests
 
 ```bash
-# 运行所有测试
+# All tests
 make test
 
-# 或使用 pytest
+# Or using pytest directly
 pytest -v
 ```
 
-### 按项目运行
+### By Project
 
 ```bash
-# Asset Lens 测试
 make test-asset-lens
-
-# TS-Demo 测试
 make test-ts-demo
-
-# Solo Chat 测试
 make test-solo-chat
-
-# Stock Analyzer 测试
 make test-stock-analyzer
 ```
 
-### 按类型运行
+### By Marker
 
 ```bash
-# UI 测试
+# UI tests
 pytest -v -m ui
 
-# API 测试
+# API tests
 pytest -v -m api
 
-# 性能测试
+# Performance tests
 pytest -v -m slow
 ```
 
-### 调试模式
+### Debug Mode
 
 ```bash
-# 显示浏览器窗口
+# Show browser window
 pytest -v --headed
 
-# 慢速模式（每步延迟 500ms）
+# Slow motion (500ms step delay)
 make test-debug
 
-# 并行运行
+# Parallel execution
 make test-parallel
 ```
 
-### 生成报告
+### Reports
 
 ```bash
-# HTML 报告
 make report
-
-# 或
+# or
 pytest --html=report.html --self-contained-html
 ```
 
-## 测试标记
+## Test Markers
 
-| 标记 | 说明 |
-|------|------|
-| `asset_lens` | Asset Lens 项目测试 |
-| `ts_demo` | TS-Demo 项目测试 |
-| `solo_chat` | Solo Chat 项目测试 |
-| `stock_analyzer` | Stock Analyzer 项目测试 |
-| `lobster` | Lobster 项目测试 |
-| `investkit_utils` | InvestKit Utils 测试 |
-| `ui` | UI 测试 |
-| `api` | API 测试 |
-| `slow` | 性能测试 |
+| Marker | Description |
+|--------|-------------|
+| `asset_lens` | Asset Lens project |
+| `ts_demo` | TS-Demo project |
+| `solo_chat` | Solo Chat project |
+| `stock_analyzer` | Stock Analyzer project |
+| `lobster` | Lobster project |
+| `investkit_utils` | InvestKit Utils tests |
+| `ui` | UI tests |
+| `api` | API tests |
+| `slow` | Performance tests |
 
-## 辅助工具
+## Helper Utilities
 
 ### PageHelper
 
-页面操作辅助类：
-
 ```python
 def test_example(page: Page, page_helper: PageHelper):
-    # 快速导航
     page_helper.goto_fast("http://localhost:8000")
-    
-    # 导航并等待
     page_helper.goto_and_wait("http://localhost:8000")
-    
-    # 等待文本
-    page_helper.wait_for_text("欢迎")
-    
-    # 等待选择器
+    page_helper.wait_for_text("Welcome")
     page_helper.wait_for_selector(".dashboard")
-    
-    # 点击并等待
     page_helper.click_and_wait("button")
-    
-    # 填充表单
     page_helper.fill_and_submit("#input", "value", "#submit")
-    
-    # 截图
     page_helper.take_screenshot("test")
-    
-    # 检查可见性
     if page_helper.is_visible(".modal"):
         page_helper.click_and_wait(".close")
-    
-    # 获取文本
     text = page_helper.get_text(".title")
-    
-    # 获取输入值
     value = page_helper.get_value("#input")
 ```
 
 ### APITester
 
-API 测试辅助类：
-
 ```python
 def test_api(page: Page, api_tester: APITester):
-    # GET 请求
     result = api_tester.get("/api/health", expected_status=[200])
     assert result["status"] == 200
-    
-    # POST 请求
-    result = api_tester.post(
-        "/api/chat",
-        data={"message": "hello"},
-        expected_status=[200, 201]
-    )
-    
-    # DELETE 请求
+    result = api_tester.post("/api/chat", data={"message": "hello"}, expected_status=[200, 201])
     result = api_tester.delete("/api/item/1")
 ```
 
 ## CI/CD
 
-项目使用 GitHub Actions 进行持续集成：
+GitHub Actions workflow:
 
-- **触发条件**：push 到 main 分支、PR、每日定时
-- **运行环境**：Ubuntu Latest + Python 3.11
-- **测试步骤**：lint → format check → E2E tests
-- **结果上传**：测试失败时上传截图和日志
+- **Trigger**: push to main, PR, daily schedule
+- **Environment**: Ubuntu Latest + Python 3.11
+- **Steps**: lint → format check → E2E tests
+- **Artifacts**: screenshots and logs on failure
 
-## 测试结果
+## Test Results
 
-测试结果保存在 `test-results/` 目录：
+Results are saved in `test-results/`:
 
 ```
 test-results/
-├── screenshots/     # 失败截图
-├── videos/          # 录像（启用时）
-├── traces/          # 追踪（启用时）
-└── har/             # HAR 文件（启用时）
+├── screenshots/     # Failure screenshots
+├── videos/          # Recordings (if enabled)
+├── traces/          # Traces (if enabled)
+└── har/             # HAR files (if enabled)
 ```
 
-## 最佳实践
+## Best Practices
 
-1. **使用标记**：为测试添加适当的标记，便于筛选运行
-2. **独立测试**：每个测试应该独立，不依赖其他测试的状态
-3. **等待策略**：使用 `wait_for_*` 方法而非固定等待
-4. **截图调试**：失败时自动截图，便于调试
-5. **环境变量**：敏感配置使用环境变量
+1. **Use markers** — tag tests for selective running
+2. **Independent tests** — each test should not depend on others
+3. **Wait strategies** — use `wait_for_*` methods instead of fixed sleeps
+4. **Screenshot debugging** — auto-capture on failure
+5. **Environment variables** — sensitive config via env vars
 
-## 常见问题
+## FAQ
 
-### Q: 测试超时怎么办？
+### Q: Tests timeout?
 
-A: 增加超时时间或在 `.env` 中设置：
+Increase timeout in `.env`:
 
 ```env
 DEFAULT_TIMEOUT=30000
 NAVIGATION_TIMEOUT=60000
 ```
 
-### Q: 如何跳过某个服务测试？
-
-A: 使用 `pytest.skip()` 或在测试中检查服务可用性：
+### Q: How to skip a service test?
 
 ```python
 def test_example(asset_lens_url: str):
     if not check_server_health(asset_lens_url):
-        pytest.skip("服务不可用")
+        pytest.skip("Service unavailable")
 ```
 
-### Q: 如何调试失败的测试？
-
-A: 使用调试模式：
+### Q: How to debug a failing test?
 
 ```bash
 pytest -v --headed --slowmo=500 -k "test_name"
 ```
+
+## License
+
+MIT
