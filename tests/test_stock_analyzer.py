@@ -14,7 +14,9 @@ class TestStockAnalyzerUI:
 
     def test_dashboard_exists(self, page: Page, stock_analyzer_url: str, page_helper: PageHelper):
         SharedTestHelpers.assert_page_content_visible(
-            page, page_helper, stock_analyzer_url,
+            page,
+            page_helper,
+            stock_analyzer_url,
             [".dashboard", "[data-testid='dashboard']", ".main-content", "#app"],
         )
 

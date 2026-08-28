@@ -8,13 +8,13 @@ from tests.conftest import APITester, PageHelper, SharedTestHelpers
 @pytest.mark.ui
 class TestAssetLensUI:
     def test_homepage_loads(self, page: Page, asset_lens_url: str, page_helper: PageHelper):
-        SharedTestHelpers.assert_homepage_loads(
-            page, page_helper, asset_lens_url, ["Asset", "Lens", "投资", "资产"]
-        )
+        SharedTestHelpers.assert_homepage_loads(page, page_helper, asset_lens_url, ["Asset", "Lens", "投资", "资产"])
 
     def test_navigation_menu(self, page: Page, asset_lens_url: str, page_helper: PageHelper):
         SharedTestHelpers.assert_page_content_visible(
-            page, page_helper, asset_lens_url,
+            page,
+            page_helper,
+            asset_lens_url,
             ["nav", "header", "[role='navigation']", ".navbar"],
         )
 
@@ -30,7 +30,9 @@ class TestAssetLensAPI:
 
     def test_openapi_json(self, page: Page, asset_lens_url: str, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/openapi.json", expected_keys=["openapi", "paths"],
+            api_tester,
+            "/openapi.json",
+            expected_keys=["openapi", "paths"],
         )
 
     def test_portfolio_endpoint(self, page: Page, asset_lens_url: str, api_tester: APITester):

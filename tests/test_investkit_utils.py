@@ -71,9 +71,7 @@ class TestInvestkitUtilsConfig:
         assert config_template.exists(), f"配置模板文件不存在: {config_template}"
         content = config_template.read_text(encoding="utf-8")
         assert len(content) > 0, "配置模板文件为空"
-        assert "app:" in content or "database:" in content, (
-            "配置模板应包含 app 或 database 配置节"
-        )
+        assert "app:" in content or "database:" in content, "配置模板应包含 app 或 database 配置节"
 
 
 @pytest.mark.investkit_utils

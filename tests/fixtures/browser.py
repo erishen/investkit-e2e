@@ -38,9 +38,7 @@ class PageHelper:
         self.page.click(selector, timeout=timeout)
         self.page.wait_for_load_state("domcontentloaded")
 
-    def fill_and_submit(
-        self, selector: str, value: str, submit_selector: str | None = None
-    ) -> None:
+    def fill_and_submit(self, selector: str, value: str, submit_selector: str | None = None) -> None:
         self.page.fill(selector, value)
         if submit_selector:
             self.page.click(submit_selector)
@@ -119,9 +117,7 @@ def page_helper(page: Page) -> PageHelper:
 
 
 @pytest.fixture(scope="module")
-def shared_context(
-    browser_type_launch_args: dict, browser_type: type
-) -> Generator[BrowserContext, None, None]:
+def shared_context(browser_type_launch_args: dict, browser_type: type) -> Generator[BrowserContext, None, None]:
     browser = browser_type.launch(**browser_type_launch_args)
     context = browser.new_context(
         viewport={"width": VIEWPORT_WIDTH, "height": VIEWPORT_HEIGHT},

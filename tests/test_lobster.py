@@ -19,25 +19,29 @@ class TestLobsterHealthAPI:
 class TestLobsterInvestAPI:
     def test_signals_endpoint(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/invest/signals",
+            api_tester,
+            "/api/invest/signals",
             expected_keys=["signals", "data", "items", "results"],
         )
 
     def test_portfolio_endpoint(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/invest/portfolio",
+            api_tester,
+            "/api/invest/portfolio",
             expected_keys=["portfolio", "data", "items", "holdings"],
         )
 
     def test_risk_endpoint(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/invest/risk",
+            api_tester,
+            "/api/invest/risk",
             expected_keys=["risk", "data", "items", "metrics"],
         )
 
     def test_market_endpoint(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/invest/market",
+            api_tester,
+            "/api/invest/market",
             expected_keys=["market", "data", "items", "indices"],
         )
 
@@ -47,15 +51,18 @@ class TestLobsterInvestAPI:
 class TestLobsterRAGAPI:
     def test_rag_status(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/rag/status",
+            api_tester,
+            "/api/rag/status",
             expected_keys=["status", "data", "ready", "enabled"],
         )
 
     def test_rag_query(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/rag/query",
+            api_tester,
+            "/api/rag/query",
             expected_keys=["answer", "data", "results", "documents"],
-            method="post", data={"query": "投资策略", "k": 5},
+            method="post",
+            data={"query": "投资策略", "k": 5},
         )
 
 
@@ -64,13 +71,15 @@ class TestLobsterRAGAPI:
 class TestLobsterSchedulerAPI:
     def test_scheduler_list(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/scheduler/list",
+            api_tester,
+            "/api/scheduler/list",
             expected_keys=["tasks", "data", "items", "jobs"],
         )
 
     def test_scheduler_status(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/scheduler/status",
+            api_tester,
+            "/api/scheduler/status",
             expected_keys=["status", "data", "running", "enabled"],
         )
 
@@ -80,15 +89,18 @@ class TestLobsterSchedulerAPI:
 class TestLobsterMemoryAPI:
     def test_memory_list(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/memory/list",
+            api_tester,
+            "/api/memory/list",
             expected_keys=["memories", "data", "items", "records"],
         )
 
     def test_memory_search(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/memory/search",
+            api_tester,
+            "/api/memory/search",
             expected_keys=["results", "data", "items", "memories"],
-            method="post", data={"query": "测试", "limit": 10},
+            method="post",
+            data={"query": "测试", "limit": 10},
         )
 
 
@@ -97,15 +109,18 @@ class TestLobsterMemoryAPI:
 class TestLobsterLLMAPI:
     def test_llm_status(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/llm/status",
+            api_tester,
+            "/api/llm/status",
             expected_keys=["status", "data", "model", "ready"],
         )
 
     def test_llm_chat(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/llm/chat",
+            api_tester,
+            "/api/llm/chat",
             expected_keys=["response", "data", "message", "content"],
-            method="post", data={"message": "你好", "stream": False},
+            method="post",
+            data={"message": "你好", "stream": False},
         )
 
 
@@ -114,15 +129,18 @@ class TestLobsterLLMAPI:
 class TestLobsterDataAPI:
     def test_data_status(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/data/status",
+            api_tester,
+            "/api/data/status",
             expected_keys=["status", "data", "sources", "last_sync"],
         )
 
     def test_data_sync(self, page: Page, api_tester: APITester):
         SharedTestHelpers.assert_api_endpoint(
-            api_tester, "/api/data/sync",
+            api_tester,
+            "/api/data/sync",
             expected_keys=["status", "data", "sync_id", "result"],
-            method="post", data={"source": "sina"},
+            method="post",
+            data={"source": "sina"},
         )
 
 

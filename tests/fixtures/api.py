@@ -22,33 +22,23 @@ class APITester:
         response = self.page.request.get(url)
 
         if expected_status:
-            assert response.status in expected_status, (
-                f"期望状态码 {expected_status}，实际 {response.status}"
-            )
+            assert response.status in expected_status, f"期望状态码 {expected_status}，实际 {response.status}"
         else:
-            assert response.status < 500, (
-                f"服务器错误，状态码 {response.status}，端点 {endpoint}"
-            )
+            assert response.status < 500, f"服务器错误，状态码 {response.status}，端点 {endpoint}"
 
         try:
             return {"status": response.status, "data": response.json()}
         except Exception:
             return {"status": response.status, "data": None}
 
-    def post(
-        self, endpoint: str, data: dict | None = None, expected_status: list | None = None
-    ) -> dict:
+    def post(self, endpoint: str, data: dict | None = None, expected_status: list | None = None) -> dict:
         url = f"{self.base_url}{endpoint}"
         response = self.page.request.post(url, data=data)
 
         if expected_status:
-            assert response.status in expected_status, (
-                f"期望状态码 {expected_status}，实际 {response.status}"
-            )
+            assert response.status in expected_status, f"期望状态码 {expected_status}，实际 {response.status}"
         else:
-            assert response.status < 500, (
-                f"服务器错误，状态码 {response.status}，端点 {endpoint}"
-            )
+            assert response.status < 500, f"服务器错误，状态码 {response.status}，端点 {endpoint}"
 
         try:
             return {"status": response.status, "data": response.json()}
@@ -60,13 +50,9 @@ class APITester:
         response = self.page.request.delete(url)
 
         if expected_status:
-            assert response.status in expected_status, (
-                f"期望状态码 {expected_status}，实际 {response.status}"
-            )
+            assert response.status in expected_status, f"期望状态码 {expected_status}，实际 {response.status}"
         else:
-            assert response.status < 500, (
-                f"服务器错误，状态码 {response.status}，端点 {endpoint}"
-            )
+            assert response.status < 500, f"服务器错误，状态码 {response.status}，端点 {endpoint}"
 
         try:
             return {"status": response.status, "data": response.json()}
@@ -80,9 +66,7 @@ class SharedTestHelpers:
         page_helper.goto_and_wait(base_url)
         title = page.title()
         assert title != "", "页面标题为空"
-        assert any(kw in title for kw in expected_keywords), (
-            f"页面标题应包含项目关键词，实际标题: {title}"
-        )
+        assert any(kw in title for kw in expected_keywords), f"页面标题应包含项目关键词，实际标题: {title}"
 
     @staticmethod
     def assert_health_endpoint(api_tester):
@@ -124,17 +108,13 @@ class SharedTestHelpers:
         if result["status"] == 200 and result["data"]:
             assert isinstance(result["data"], (dict, list)), f"{endpoint} 响应应为 dict 或 list"
             if isinstance(result["data"], dict) and expected_keys:
-                assert any(k in result["data"] for k in expected_keys), (
-                    f"{endpoint} 响应应包含 {expected_keys} 字段"
-                )
+                assert any(k in result["data"] for k in expected_keys), f"{endpoint} 响应应包含 {expected_keys} 字段"
 
     @staticmethod
     def assert_page_content_visible(page, page_helper, base_url, selectors):
         page_helper.goto_and_wait(base_url)
         content = page.content()
-        assert len(content) > MIN_PAGE_CONTENT_LENGTH, (
-            f"页面内容过短，可能未正确加载，长度: {len(content)}"
-        )
+        assert len(content) > MIN_PAGE_CONTENT_LENGTH, f"页面内容过短，可能未正确加载，长度: {len(content)}"
         found = any(page_helper.is_visible(sel) for sel in selectors)
         assert found, f"未找到预期内容，页面标题: {page.title()}"
 
