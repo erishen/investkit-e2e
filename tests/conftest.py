@@ -59,7 +59,7 @@ def pytest_runtest_makereport(item: pytest.Item, call: pytest.CallInfo):
 def _service_up(url: str, timeout: float = 2.0) -> bool:
     """Probe a service base URL; any HTTP response (even 4xx/5xx) counts as up."""
     try:
-        urllib.request.urlopen(url, timeout=timeout)  # noqa: S310
+        urllib.request.urlopen(url, timeout=timeout)
         return True
     except urllib.error.HTTPError:
         return True
@@ -82,9 +82,7 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
             continue
         service = SERVICES.get(m.group(1))
         if service and not _service_up(service["url"]):
-            item.add_marker(
-                pytest.mark.skip(reason=f"{m.group(1)} service unreachable at {service['url']}")
-            )
+            item.add_marker(pytest.mark.skip(reason=f"{m.group(1)} service unreachable at {service['url']}"))
 
 
 def _save_failure_artifacts(page: Page, request: pytest.FixtureRequest) -> None:
