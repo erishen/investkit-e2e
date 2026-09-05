@@ -34,7 +34,7 @@ jobs:
         run: ruff format --check tests
 
       - name: Run E2E tests
-        run: pytest tests/ -v --headless
+        run: pytest tests/
         env:
           HEADLESS: true
 

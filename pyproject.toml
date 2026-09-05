@@ -28,7 +28,7 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "-v --tb=short --headless"
+addopts = "-v --tb=short"
 markers = [
     "slow: marks tests as slow",
     "api: API endpoint tests",
@@ -51,6 +51,10 @@ ignore = ["S101", "RUF001", "RUF002", "RUF003", "PERF203", "PERF401", "RUF012", 
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S", "B", "RUF012"]
+# conftest.py / fixtures/__init__.py: imports are pytest fixture registration
+# (side-effect re-exports), removing them would un-register the fixtures.
+"tests/conftest.py" = ["F401"]
+"tests/fixtures/__init__.py" = ["F401", "F403"]
 
 [tool.ruff.format]
 quote-style = "double"

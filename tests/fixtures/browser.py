@@ -8,9 +8,7 @@ from playwright.sync_api import BrowserContext, Page
 from tests.fixtures.config import (
     DEFAULT_NAVIGATION_TIMEOUT,
     DEFAULT_TIMEOUT,
-    SCREENSHOT_DIR,
     SERVICES,
-    TRACE_DIR,
     VIDEO_DIR,
     VIEWPORT_HEIGHT,
     VIEWPORT_WIDTH,

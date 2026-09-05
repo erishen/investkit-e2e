@@ -4,7 +4,6 @@ import pytest
 from playwright.sync_api import Page
 
 from tests.fixtures.config import (
-    ERROR_STATUS_THRESHOLD,
     MAX_API_RESPONSE_SECONDS,
     MAX_PAGE_LOAD_SECONDS,
     MIN_PAGE_CONTENT_LENGTH,

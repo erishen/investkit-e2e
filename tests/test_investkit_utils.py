@@ -3,7 +3,6 @@ InvestKit Utils E2E Tests.
 InvestKit 共享模块测试
 """
 
-import importlib
 from pathlib import Path
 
 import pytest
